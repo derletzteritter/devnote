@@ -17,13 +17,23 @@ func findFiles() []fs.FileInfo {
 	return files
 }
 
-func BuildFilesLayout() []*giu.TableRowWidget {
+func BuildFilesLayout(openFile func(file string)) []*giu.TableRowWidget {
 	files := findFiles()
 
 	rows := make([]*giu.TableRowWidget, len(files))
 
 	for i := range rows {
-		rows[i] = giu.TableRow(giu.Label(files[i].Name()), giu.Row(giu.Button("Open"), giu.Button("Delete")))
+		rows[i] = giu.TableRow(
+			giu.Label(
+				files[i].Name()),
+				giu.Row(
+					giu.Button("Open").OnClick(func() {
+						file := OpenNote(files[i].Name())
+						openFile(string(file))
+					}),
+					giu.Button("Delete").OnClick(func() {
+						DeleteNote(files[i].Name())
+					})))
 	}
 
 	return rows
