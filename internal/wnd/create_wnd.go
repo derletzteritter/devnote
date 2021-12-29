@@ -1,7 +1,6 @@
 package wnd
 
 import (
-	"fmt"
 	"github.com/AllenDang/giu"
 	"github.com/itschip/dev-note/internal/files"
 )
@@ -15,6 +14,7 @@ var (
 	showFileDialog bool
 	newFileName string
 	fileContent string
+	noteName string
 	showFileEditor bool
 	editor *giu.CodeEditorWidget
 )
@@ -43,8 +43,9 @@ func wndLoop() {
 		giu.Row(
 			giu.InputText(&searchValue),
 			giu.Button("New file").OnClick(onShowFileDialog)),
-		giu.Label("All files"), giu.Table().Rows(files.BuildFilesLayout(func(file string) {
+		giu.Label("All files"), giu.Table().Rows(files.BuildFilesLayout(func(file string, filename string) {
 			fileContent = file
+			noteName = filename
 
 			editor = giu.CodeEditor().ShowWhitespaces(true).Text(fileContent).Border(true)
 
@@ -66,14 +67,17 @@ func wndLoop() {
 	if showFileEditor {
 		if editor.IsTextChanged() {
 			fileContent = editor.GetText()
-			fmt.Println(fileContent)
 		}
 
-		giu.Window("Editor").IsOpen(&showFileEditor).Size(500, 500).
+		giu.Window("Editor").IsOpen(&showFileEditor).Size(800, 650).
 			Layout(
-				giu.Markdown(&fileContent),
-				editor,
-				giu.Button("Close").OnClick(onHideFileEditor))
+				giu.SplitLayout(giu.DirectionHorizontal, 200, giu.Markdown(&fileContent), editor),
+				giu.Button("Close").OnClick(onHideFileEditor),
+				giu.Button("Save").OnClick(func() {
+					content := []byte(fileContent)
+
+					files.SaveNote(noteName, content)
+				}))
 	}
 }
 

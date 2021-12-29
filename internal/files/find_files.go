@@ -17,7 +17,7 @@ func findFiles() []fs.FileInfo {
 	return files
 }
 
-func BuildFilesLayout(openFile func(file string)) []*giu.TableRowWidget {
+func BuildFilesLayout(openFile func(file string, noteName string)) []*giu.TableRowWidget {
 	files := findFiles()
 
 	rows := make([]*giu.TableRowWidget, len(files))
@@ -29,7 +29,7 @@ func BuildFilesLayout(openFile func(file string)) []*giu.TableRowWidget {
 				giu.Row(
 					giu.Button("Open").OnClick(func() {
 						file := OpenNote(files[i].Name())
-						openFile(string(file))
+						openFile(string(file), files[i].Name())
 					}),
 					giu.Button("Delete").OnClick(func() {
 						DeleteNote(files[i].Name())

@@ -33,7 +33,14 @@ func OpenNote(filename string) []byte {
 		fmt.Println(err.Error())
 	}
 
-	fmt.Println(string(f))
-
 	return f
+}
+
+func SaveNote(filename string, note []byte) {
+	path := NotesPath + "\\" + filename
+
+	err := ioutil.WriteFile(path, note, 0755)
+	if err != nil {
+		fmt.Printf("Failed to write file, error: %v", err.Error())
+	}
 }
