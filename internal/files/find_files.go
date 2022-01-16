@@ -2,22 +2,23 @@ package files
 
 import (
 	"fmt"
-	"github.com/AllenDang/giu"
 	"io/fs"
 	"io/ioutil"
+
+	"github.com/AllenDang/giu"
 )
 
 func findFiles() []fs.FileInfo {
 	files, err := ioutil.ReadDir("notes")
 
 	if err != nil {
-		fmt.Println("Failed to find or load files")
+		fmt.Println(err.Error())
 	}
 
 	return files
 }
 
-func BuildFilesLayout(openFile func(file string, noteName string)) []*giu.TableRowWidget {
+func BuildFilesLayout(searchValue *string, openFile func(file string, noteName string)) []*giu.TableRowWidget {
 	files := findFiles()
 
 	rows := make([]*giu.TableRowWidget, len(files))
@@ -26,14 +27,14 @@ func BuildFilesLayout(openFile func(file string, noteName string)) []*giu.TableR
 		rows[i] = giu.TableRow(
 			giu.Label(
 				files[i].Name()),
-				giu.Row(
-					giu.Button("Open").OnClick(func() {
-						file := OpenNote(files[i].Name())
-						openFile(string(file), files[i].Name())
-					}),
-					giu.Button("Delete").OnClick(func() {
-						DeleteNote(files[i].Name())
-					})))
+			giu.Row(
+				giu.Button("Open").OnClick(func() {
+					file := OpenNote(files[i].Name())
+					openFile(string(file), files[i].Name())
+				}),
+				giu.Button("Delete").OnClick(func() {
+					DeleteNote(files[i].Name())
+				})))
 	}
 
 	return rows

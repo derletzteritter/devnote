@@ -41,9 +41,8 @@ func wndLoop() {
 		giu.Label("Search for files"),
 		giu.Spacing(),
 		giu.Row(
-			giu.InputText(&searchValue),
 			giu.Button("New file").OnClick(onShowFileDialog)),
-		giu.Label("All files"), giu.Table().Rows(files.BuildFilesLayout(func(file string, filename string) {
+		giu.Label("All files"), giu.Table().Rows(files.BuildFilesLayout(&searchValue, func(file string, filename string) {
 			fileContent = file
 			noteName = filename
 
