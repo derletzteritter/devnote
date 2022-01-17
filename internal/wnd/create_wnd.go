@@ -36,7 +36,6 @@ func onHideFileEditor() {
 }
 
 func wndLoop() {
-
 	giu.SingleWindow().Layout(
 		giu.Label("Search for files"),
 		giu.Spacing(),
@@ -74,14 +73,12 @@ func wndLoop() {
 				giu.Button("Close").OnClick(onHideFileEditor),
 				giu.Button("Save").OnClick(func() {
 					content := []byte(fileContent)
-
 					files.SaveNote(noteName, content)
 				}))
 	}
 }
 
 func MasterWindow() {
-
 	wnd := giu.NewMasterWindow(windowTitle, 1000, 700, giu.MasterWindowFlagsNotResizable)
 
 	wnd.Run(wndLoop)
