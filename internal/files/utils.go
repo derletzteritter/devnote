@@ -3,7 +3,7 @@ package files
 import "fmt"
 
 const (
-	NotesPath = "notes"
+	NotesPath = "../../notes"
 )
 
 func FormatFilePath(filename string) string {

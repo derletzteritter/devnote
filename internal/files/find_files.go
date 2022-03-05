@@ -9,7 +9,7 @@ import (
 )
 
 func findFiles() []fs.FileInfo {
-	files, err := ioutil.ReadDir("notes")
+	files, err := ioutil.ReadDir("../../notes")
 
 	if err != nil {
 		fmt.Println(err.Error())
